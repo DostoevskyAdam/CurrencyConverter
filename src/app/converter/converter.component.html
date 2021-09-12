@@ -1,0 +1,36 @@
+ <!-- ngIf here stops a non-fatal error that would otherwise occur
+        when a conversion is attempted asynchronously and
+        the compiler tries to convert before types have been defined.
+        ngIf won't allow it until the rates get defined.
+-->
+<div class="container" *ngIf="rates">
+
+<h1>Currency Converter</h1>
+
+<!--One-way data binding-->
+<!-- <input type="number" placeholder="amount" [value]="amount"> -->
+
+<!--Two-way data binding-->
+<input type="number" placeholder="amount" [(ngModel)]="amount">
+<br>
+<!-- <label>From: {{ from }} </label> -->
+<label>From: </label>
+<!-- ngFor: fill the selector box with all the available currencies-->
+<!-- change: gets the latest exchange rates each time a different currency is selected-->
+    <select [(ngModel)]="from" (change)="loadRates()">
+        <option *ngFor="let c of getAllCurrencies()" [value]="c">
+            {{c}}
+        </option>
+    </select>
+<!-- <label>To: {{ to }}</label> -->
+<label>To: </label>
+    <select [(ngModel)]="to">
+        <option *ngFor="let c of getAllCurrencies()" [value]="c">
+            {{c}}
+        </option>
+    </select>
+<hr>
+<!--route the amount to two decimal places.
+    Also, style.color here prints result normally if positive, but in red if negative-->
+<b [style.color]="amount < 0 ? 'red': ''">{{ amount.toFixed(2) }} {{ from }} = {{ convert().toFixed(2) }} {{ to }} </b>
+</div>
